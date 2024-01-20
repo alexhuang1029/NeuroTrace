@@ -49,13 +49,12 @@ def dataOutliers(hdata, columnNumber):
                          'num_of_pendown', 'paper_time', 'pressure_mean', 'pressure_var', 'total_time']
     # Generate column names by appending columnNumber to each base column name
   column_names = [f'{base_column_name}{columnNumber}' for base_column_name in base_column_names]
-    # Creating rows and columns for outlier plots
-    fig, axes = plt.subplots(nrows=round((len(base_column_names)/3)), ncols=3, figsize=(20, 15))
-    axes = axes.flatten()
+  fig, axes = plt.subplots(nrows=round((len(base_column_names))), ncols=1, figsize=(20, 100))
+  axes = axes.flatten()
 
     # Plot boxplots for each column
-      for i, column in enumerate(column_names):
+  for i, column in enumerate(column_names):
         sns.boxplot(x=hdata[column], ax=axes[i])
-        axes[i].set_title(f'Boxplot of {column}')
-    plt.tight_layout()
-    plt.show()
+        axes[i].set_title(f'Outliers boxplot of {column}')
+
+  plt.show()
