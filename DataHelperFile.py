@@ -8,18 +8,36 @@ import seaborn as sns
 
 ## Getting hdata from csv
 
-hdata = pd.read_csv('data.csv')
+hdata = hdata = pd.read_csv('data.csv')
 
 ## Data Preprocessing
 
-pd.set_option('display.float_format', lambda x: '%.7f' % x)
+pd.set_option('display.float_format', lambda x: '%.5f' % x)
 hdata['class'] = hdata['class'].map({'P':1,'H':0})
-print(hdata)
 
 ## Creating functions
+def generate_column_names(columnNumber):
+    base_column_names = ['air_time', 'disp_index', 'gmrt_in_air', 'gmrt_on_paper', 'max_x_extension',
+                         'max_y_extension', 'mean_acc_in_air', 'mean_acc_on_paper', 'mean_gmrt',
+                         'mean_jerk_in_air', 'mean_jerk_on_paper', 'mean_speed_in_air', 'mean_speed_on_paper',
+                         'num_of_pendown', 'paper_time', 'pressure_mean', 'pressure_var', 'total_time']
+    # Generate column names: appending columnNumber to each base column name
+    column_name2 = [f'{base_column_name}{columnNumber}' for base_column_name in base_column_names]
+
+    return column_name2
 
 def summary(hdata):
-    print('-' * 15)
-    print(f'Total Number of Duplicated Data within DataFrame: {hdata[hdata.duplicated()].sum().sum()}')
-    print('-' * 15)
-    print(f"Total Number of Unique Data within DataFrame: {hdata.stack().nunique()}")
+  print('-' * 15)
+  print(f'Total Number of Duplicated Data within DataFrame: {hdata[hdata.duplicated()].sum().sum()}')
+  print('-' * 15)
+  print(f"Total Number of Unique Data within DataFrame: {hdata.stack().nunique()}")
+
+def dataQuality(columnNumber):
+  base_column_names = ['air_time', 'disp_index', 'gmrt_in_air', 'gmrt_on_paper', 'max_x_extension',
+                         'max_y_extension', 'mean_acc_in_air', 'mean_acc_on_paper', 'mean_gmrt',
+                         'mean_jerk_in_air', 'mean_jerk_on_paper', 'mean_speed_in_air', 'mean_speed_on_paper',
+                         'num_of_pendown', 'paper_time', 'pressure_mean', 'pressure_var', 'total_time']
+    # Generate column names by appending columnNumber to each base column name
+  column_names = [f'{base_column_name}{columnNumber}' for base_column_name in base_column_names]
+  numeric_df = hdata[column_names].describe(percentiles=[.25, .5, .75]).T
+  return numeric_df
