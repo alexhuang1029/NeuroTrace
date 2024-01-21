@@ -58,3 +58,18 @@ def dataOutliers(hdata, columnNumber):
         axes[i].set_title(f'Outliers boxplot of {column}')
 
   plt.show()
+
+def scatterPlot(hdata, columnNumber):
+  base_column_names = ['air_time', 'disp_index', 'gmrt_in_air', 'gmrt_on_paper', 'max_x_extension',
+                         'max_y_extension', 'mean_acc_in_air', 'mean_acc_on_paper', 'mean_gmrt',
+                         'mean_jerk_in_air', 'mean_jerk_on_paper', 'mean_speed_in_air', 'mean_speed_on_paper',
+                         'num_of_pendown', 'paper_time', 'pressure_mean', 'pressure_var', 'total_time']
+    # Generate column names by appending columnNumber to each base column name
+  column_names = [f'{base_column_name}{columnNumber}' for base_column_name in base_column_names]
+  fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(20, 10))
+  axes = axes.flatten()
+
+  # Scatterplot plot
+  sns.scatterplot(data=hdata, x='gmrt_on_paper2', y='total_time2')
+  axes[1].set_title(f'Scatterplot of total time vs Mean Relative Tremor')
+  plt.show()
