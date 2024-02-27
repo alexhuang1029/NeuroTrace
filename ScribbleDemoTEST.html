@@ -171,7 +171,7 @@
 
 	<script>
 		/////////////////////////////////////////////////////////////////////////
-        var txtFile = [];
+        var txtFile = ["X,Y,Pressure,TiltX,TiltY,Rotate,Buttons"];
 		const colorBackground = "rgba(255, 200, 120, 1.0)";	// a "tan-ish" color
 		const selectedColor = "lightgreen";
 
@@ -645,7 +645,7 @@
 						"R:" + parseFloat(rotate).toFixed(3) + ", " +
 						"B:" + buttons + '<br>';
 
-                    txtFile.push("\"" + outStr + "\"");
+                    txtFile.push(outStr);
 				}
 			}
 
@@ -674,9 +674,9 @@
 		function downloadtxtFile() {
 			console.log('\n' + txtFile)
             var textToSave = txtFile.join("\n");
-            var blob = new Blob([textToSave], { type: "text/plain" });
+            var blob = new Blob([textToSave], { type: "text/csv" });
             var a = document.createElement("a");
-            a.download = "myArray.txt";
+            a.download = "Kinematics.csv";
             a.href = window.URL.createObjectURL(blob);
             document.body.appendChild(a);
             a.click();
