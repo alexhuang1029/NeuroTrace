@@ -171,7 +171,7 @@
 
 	<script>
 		/////////////////////////////////////////////////////////////////////////
-        var txtFile = ["X,Y,Pressure,TiltX,TiltY,Rotate,Buttons"];
+        var txtFile = ["Pendown,X,Y,Pressure,TiltX,TiltY,Rotate,Buttons"];
 		const colorBackground = "rgba(255, 200, 120, 1.0)";	// a "tan-ish" color
 		const selectedColor = "lightgreen";
 
@@ -635,15 +635,26 @@
 
 					// Reporting data will cause drawing lag, resulting in flat lines.
 					// IE11 barfs on Number.parseFloat(xxxx).toFixed(3)
-					
+					if (outStr.includes("WARNING: unhandled event: ")) {
+						switch(true||false) {
+							case outStr.includes("gotpointercapture"):
+								outStr = "1, ";
+								break;
+							default: 
+								outStr = "0, ";
+						}
+					} else {
+						outStr = "0, ";
+					}
+
 					outStr +=
-						"X:" + parseFloat(screenPos.x).toFixed(3) + ", " +
-						"Y:" + parseFloat(screenPos.y).toFixed(3) + ", " +
-						"P:" + parseFloat(pressure).toFixed(3) + ", " +
-						"Tx:" + parseFloat(tilt.x).toFixed(3) + ", " +
-						"Ty:" + parseFloat(tilt.y).toFixed(3) + ", " +
-						"R:" + parseFloat(rotate).toFixed(3) + ", " +
-						"B:" + buttons + '<br>';
+						parseFloat(screenPos.x).toFixed(3) + ", " +
+						parseFloat(screenPos.y).toFixed(3) + ", " +
+						parseFloat(pressure).toFixed(3) + ", " +
+						parseFloat(tilt.x).toFixed(3) + ", " +
+						parseFloat(tilt.y).toFixed(3) + ", " +
+						parseFloat(rotate).toFixed(3) + ", " +
+						buttons + '<br>';
 
                     txtFile.push(outStr);
 				}
