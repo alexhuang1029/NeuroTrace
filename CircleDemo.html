@@ -4,26 +4,27 @@
 	<meta name="viewport" content="width=device-width, initial-scale=0.6">
 	<title>Scribble Demo for Javascript</title>
 	<style>
-		h1, h2, h3, p {
-			padding: 0;
-			margin: 0;
+		h1, h2 {margin-bottom: 0px, margin-top: 0px}, 
+		h3 {margin-top: 0px, margin-bottom: 0px}, p {
+			padding: 0px;
+			margin: 0px;
 		}
 
 		.promptLabel {
 			display: inline-block;
-			margin-top: 60px;
+			margin-top: 0px;
 			float: right;
 		}
 
 		.actionButton {
 			float: right;
-			margin-top: 10px;
+			margin-top: 0px;
 			margin-left: 10px;
 		}
 
 		.actionButtonGroup {
 			display: inline-block;
-			margin-top: 60px;
+			margin-top: 0px;
 			float: right;
 		}
 
@@ -61,7 +62,9 @@
 
 		.canvasDiv {
 			text-align: center;
-			margin-left: auto;
+			margin-left: 175px;
+			padding-top: 0px;
+			margin-top: 0px;
 			margin-right: auto;
 		}
 
@@ -78,9 +81,9 @@
 
 		div {
 			/*border: 1px solid black;*/
-			padding: 5px;
-			padding-top: 10px;
-			margin-bottom: 10px;
+			padding: 0px;
+			padding-top: 0px;
+			margin-bottom: 0px;
 		}
 
 		#myCanvas {
@@ -97,53 +100,7 @@
 	<img id="backgroundImage" src="NeuroTraceStart.png" style="display: none;">
 	<div class='parent'>
 		<h2 id="scribblePrompt">Scribble on the canvas:</h2>
-		<div class='child inlineBlockChild' style="width:150px">
-			<div class='buttonGroup'>
-				<label>Primary color:</label>
-				<label>Secondary color:</label>
-			</div>
-		</div>
-		<div class='child inlineBlockChild'>
-			<div class='buttonGroup'>
-				<button type="button" class="colorButton" id="colorButton11"></button>
-				<button type="button" class="colorButton" id="colorButton12"></button>
-			</div>
-		</div>
-		<div class='child inlineBlockChild'>
-			<div class='buttonGroup'>
-				<button type="button" class="colorButton" id="colorButton21"></button>
-				<button type="button" class="colorButton" id="colorButton22"></button>
-			</div>
-		</div>
-
-		<div class='child inlineBlockChild'>
-			<div class='buttonGroup'>
-				<button type="button" class="colorButton" id="colorButton31"></button>
-				<button type="button" class="colorButton" id="colorButton32"></button>
-			</div>
-		</div>
-
-		<div class='child inlineBlockChild'>
-			<div class='buttonGroup'>
-				<button type="button" class="colorButton" id="colorButton41"></button>
-				<button type="button" class="colorButton" id="colorButton42"></button>
-			</div>
-		</div>
-
-		<div class='child inlineBlockChild'>
-			<div class='buttonGroup'>
-				<button type="button" class="colorButton" id="colorButton51"></button>
-				<button type="button" class="colorButton" id="colorButton52"></button>
-			</div>
-		</div>
-
-		<div class='child inlineBlockChild'>
-			<div class='buttonGroup'>
-				<button type="button" class="colorButton" id="colorButton61"></button>
-				<button type="button" class="colorButton" id="colorButton62"></button>
-			</div>
-		</div>
-
+		<h3>Press Fn+F11 to enable full screen</h3>
 		<div class="actionButtonGroup">
 			<button type="button" class="actionButton" onclick="clearCanvas()" style="font-size:20px">Clear</button>
 			<button type="button" class="actionButton" onclick="saveCanvas()" style="font-size:20px">Save</button>
@@ -218,18 +175,6 @@
 		//
 		function initPage() {
 			setCanvasProps();
-			initButton("colorButton11", "red");
-			initButton("colorButton12", "red");
-			initButton("colorButton21", "green");
-			initButton("colorButton22", "green");
-			initButton("colorButton31", "blue");
-			initButton("colorButton32", "blue");
-			initButton("colorButton41", "white");
-			initButton("colorButton42", "white");
-			initButton("colorButton51", "black");
-			initButton("colorButton52", "black");
-			initButton("colorButton61", "gray");
-			initButton("colorButton62", "gray");
 			var img = new Image();
     img.onload = function () {
         context.drawImage(img, 0, 0, myCanvas.width, myCanvas.height);
@@ -239,44 +184,7 @@
 
 		/////////////////////////////////////////////////////////////////////////
 
-		function initButton(buttonId_I, backgroundColor_I) {
-			var button = document.getElementById(buttonId_I);
-			button.style.backgroundColor = backgroundColor_I;
-			buttonProps.set(buttonId_I, backgroundColor_I);
-			if (button == primaryColorButton || button == secondaryColorButton)
-			{
-				button.style.borderColor = selectedColor;
-			}
-			button.onclick = function () { 
-					//alert(button.id + " background: " + buttonProps.get(button.id));
-				switch(button.id)
-				{
-					case "colorButton11":
-					case "colorButton21":
-					case "colorButton31":
-					case "colorButton41":
-					case "colorButton51":
-					case "colorButton61":
-						primaryColorButton.style.borderColor = "black";
-						primaryColorButton = button;
-						primaryColorButton.style.borderColor = selectedColor;
-						break;
-					case "colorButton12":
-					case "colorButton22":
-					case "colorButton32":
-					case "colorButton42":
-					case "colorButton52":
-					case "colorButton62":
-						secondaryColorButton.style.borderColor = "black";
-						secondaryColorButton = button;
-						secondaryColorButton.style.borderColor = selectedColor;
-						break;
-					default:
-						// no change of color
-						alert(button.id + " not found!");
-				}
-			};
-		}
+		
 
 		/////////////////////////////////////////////////////////////////////////
 		// Init canvas properties.
