@@ -178,7 +178,7 @@
 		const selectedColor = "lightgreen";
 
 		var currentImageIndex = 0;
-		var imagePaths = [
+		var imagePaths = ['NeuroTraceStart.png',
 		    'Test2.png',
 		    'Test3.png',
 		    'Test4.png',
@@ -735,7 +735,7 @@
 
 		
 		function downloadtxtFile() {
-   			var imageName = imagePaths[currentImageIndex].split('/').pop();
+   			var imageName = imagePaths[currentImageIndex - 1].split('/').pop();
     			var csvFileName = imageName.replace(/\.[^/.]+$/, "") + ".csv";
     			var textToSave = txtFile.join("\n");
     			var blob = new Blob([textToSave], { type: "text/csv" });
