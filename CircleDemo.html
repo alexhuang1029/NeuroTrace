@@ -93,6 +93,7 @@
 	</style>
 </head>
 <body onload="initPage()" onresize="setCanvasProps()" oncontextmenu="return false;">
+	<img id="backgroundImage" src="Circle.png" style="display: none;">
 	<div class='parent'>
 		<h2 id="scribblePrompt">Scribble on the canvas:</h2>
 		<div class='child inlineBlockChild' style="width:150px">
@@ -154,7 +155,7 @@
 	</div>
 
 	<div class="canvasDiv">
-		<canvas id="myCanvas" height="800"
+		<canvas id="myCanvas" height="800" width = "1000"
 				  style="border:1px solid #d3d3d3;">
 			Your browser does not support the canvas element.
 		</canvas>
@@ -171,7 +172,7 @@
 
 	<script>
 		/////////////////////////////////////////////////////////////////////////
-        var txtFile = ["Pendown,X,Y,Pressure,TiltX,TiltY,Rotate,Buttons"];
+		var txtFile = ["Pendown,X,Y,Pressure,TiltX,TiltY,Rotate,Buttons"];
 		const colorBackground = "rgba(255, 200, 120, 1.0)";	// a "tan-ish" color
 		const selectedColor = "lightgreen";
 
@@ -220,6 +221,11 @@
 			initButton("colorButton52", "black");
 			initButton("colorButton61", "gray");
 			initButton("colorButton62", "gray");
+			var img = new Image();
+    img.onload = function () {
+        context.drawImage(img, 0, 0, myCanvas.width, myCanvas.height);
+    };
+    img.src = document.getElementById("backgroundImage").src;
 		}
 
 		/////////////////////////////////////////////////////////////////////////
@@ -311,8 +317,12 @@
 		//
 		function saveCanvas() {
 			// IE and Edge
+			if (!backgroundImage.complete) {
+        		console.log('Image not fully loaded. Cannot save canvas yet.');
+        		return;
+			}
 			if (isMSBrowser()) {
-				window.navigator.msSaveBlob(myCanvas.msToBlob(), "scribble.png");
+				window.navigator.msSaveBlob(backgroundImage.msToBlob(), "scribble.png");
 			}
 			else {
 				var link = document.getElementById('link');
@@ -339,6 +349,13 @@
 		/////////////////////////////////////////////////////////////////////////
 		// Upon a window load event, registers all events.
 		//
+		document.addEventListener('keydown', function(event) {
+    		// Check if the pressed key is 's' (case-sensitive)
+   			if (event.key === 's') {
+        			// Call a function or trigger an action when 'S' key is pressed
+        			finishAndSave();
+    							}
+		});
 		window.addEventListener('load', function () {
 			// These events are handled for browsers that do not
 			// handle PointerEvent.
@@ -697,6 +714,7 @@
             downloadtxtFile();
             saveCanvas();
         }
+		
 		console.log(txtFile);
 	</script>
 	<button onclick="finishAndSave()">Finish and Save</button>
