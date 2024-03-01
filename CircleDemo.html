@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=0.5">
 	<title>Scribble Demo for Javascript</title>
 	<style>
 		h1, h2, h3, p {
@@ -92,8 +93,8 @@
 		}
 	</style>
 </head>
-<body onload="initPage()" onresize="setCanvasProps()" oncontextmenu="return false;">
-	<img id="backgroundImage" src="Circle.png" style="display: none;">
+<body onload="initPage()" oncontextmenu="return false;">
+	<img id="backgroundImage" src="NeuroTraceStart.png" style="display: none;">
 	<div class='parent'>
 		<h2 id="scribblePrompt">Scribble on the canvas:</h2>
 		<div class='child inlineBlockChild' style="width:150px">
@@ -155,7 +156,7 @@
 	</div>
 
 	<div class="canvasDiv">
-		<canvas id="myCanvas" height="800" width = "1000"
+		<canvas id="myCanvas" width="800" height="600"
 				  style="border:1px solid #d3d3d3;">
 			Your browser does not support the canvas element.
 		</canvas>
@@ -175,6 +176,14 @@
 		var txtFile = ["Pendown,X,Y,Pressure,TiltX,TiltY,Rotate,Buttons"];
 		const colorBackground = "rgba(255, 200, 120, 1.0)";	// a "tan-ish" color
 		const selectedColor = "lightgreen";
+
+		var currentImageIndex = 0;
+		var imagePaths = [
+		    'Test2.png',
+		    'Test3.png',
+		    'Test4.png',
+		    'Test8.png',
+		    'Test9.png',]
 
 		var myCanvas = document.getElementById("myCanvas");
 		var reportElem = document.getElementById("reportElement");
@@ -356,6 +365,14 @@
         			finishAndSave();
     							}
 		});
+		document.addEventListener('keydown', function(event) {
+    		// Check if the pressed key is '1' (case-sensitive)
+   			if (event.key === '1') {
+        			// Call a function or trigger an action when 'S' key is pressed
+        			press1();
+    							}
+		});
+
 		window.addEventListener('load', function () {
 			// These events are handled for browsers that do not
 			// handle PointerEvent.
@@ -699,21 +716,45 @@
 				}
 			}
 		}, true);  // end window.addEventListener
+		function nextPage() {
+			console.log('Current Image Path:', imagePaths[currentImageIndex]);
+			currentImageIndex = (currentImageIndex + 1) % imagePaths.length;
+			var newImage = new Image();
+			newImage.onload = function () {
+       			// Update canvas and other actions only after the image is fully loaded
+        		document.getElementById('backgroundImage').src = newImage.src;
+        		// Adjust canvas properties based on the loaded image
+    			};
+			newImage.onerror = function () {
+        			console.error('Failed to load image:', imagePaths[currentImageIndex]);
+    	};
+
+    			// Set the source after attaching the onload and onerror handlers
+    			newImage.src = imagePaths[currentImageIndex];
+	}
+
+		
 		function downloadtxtFile() {
-			console.log('\n' + txtFile)
-            var textToSave = txtFile.join("\n");
-            var blob = new Blob([textToSave], { type: "text/csv" });
-            var a = document.createElement("a");
-            a.download = "Kinematics.csv";
-            a.href = window.URL.createObjectURL(blob);
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-		}
+   			var imageName = imagePaths[currentImageIndex].split('/').pop();
+    			var csvFileName = imageName.replace(/\.[^/.]+$/, "") + ".csv";
+    			var textToSave = txtFile.join("\n");
+    			var blob = new Blob([textToSave], { type: "text/csv" });
+    			var a = document.createElement("a");
+    			a.download = csvFileName;
+    			a.href = window.URL.createObjectURL(blob);
+    			document.body.appendChild(a);
+    			a.click();
+    			document.body.removeChild(a);
+}
         function finishAndSave() {
             downloadtxtFile();
-            saveCanvas();
+		nextPage();
+		initPage();
         }
+	function press1() {
+		nextPage();
+		initPage();
+	}
 		
 		console.log(txtFile);
 	</script>
