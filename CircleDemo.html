@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=0.5">
+	<meta name="viewport" content="width=device-width, initial-scale=0.6">
 	<title>Scribble Demo for Javascript</title>
 	<style>
 		h1, h2, h3, p {
@@ -156,7 +156,7 @@
 	</div>
 
 	<div class="canvasDiv">
-		<canvas id="myCanvas" width="800" height="600"
+		<canvas id="myCanvas" height="600"
 				  style="border:1px solid #d3d3d3;">
 			Your browser does not support the canvas element.
 		</canvas>
@@ -285,7 +285,7 @@
 		//
 		function setCanvasProps() {
 			if (myCanvas.width < window.innerWidth) {
-				myCanvas.width = window.innerWidth - 20;
+				myCanvas.width = window.innerWidth - 300;
 			}
 			clearCanvas();	// ensures background saved with drawn image
 		}
@@ -750,10 +750,12 @@
             downloadtxtFile();
 		nextPage();
 		initPage();
+		txtFile = ["Pendown,X,Y,Pressure,TiltX,TiltY,Rotate,Buttons"];
         }
 	function press1() {
 		nextPage();
 		initPage();
+		txtFile = ["Pendown,X,Y,Pressure,TiltX,TiltY,Rotate,Buttons"];
 	}
 		
 		console.log(txtFile);
