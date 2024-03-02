@@ -68,24 +68,6 @@
 			margin-right: auto;
 		}
 
-		.reportDiv {
-			display: block;
-			font-size: 0.75em;
-			background: #ddd;
-			height: 20em;
-			overflow: auto;
-			line-height: 1;
-			margin-left: auto;
-			margin-right: auto;
-		}
-
-		div {
-			/*border: 1px solid black;*/
-			padding: 0px;
-			padding-top: 0px;
-			margin-bottom: 0px;
-		}
-
 		#myCanvas {
 			touch-action: none; /*prevent canvas scrolling and system touch behavior*/
 			display: block;
@@ -99,35 +81,26 @@
 <body onload="initPage()" oncontextmenu="return false;">
 	<img id="backgroundImage" src="NeuroTraceStart.png" style="display: none;">
 	<div class='parent'>
-		<h2 id="scribblePrompt">Scribble on the canvas:</h2>
-		<h3>Press Fn+F11 to enable full screen</h3>
+		<h2 id="scribblePrompt">NeuroTrace build 1.3: Active</h2>
 		<div class="actionButtonGroup">
 			<button type="button" class="actionButton" onclick="clearCanvas()" style="font-size:20px">Clear</button>
 			<button type="button" class="actionButton" onclick="saveCanvas()" style="font-size:20px">Save</button>
+			<button type="button" class="actionButton" onclick="scrollTo()" style="font-size:20px">Start</button>
 		</div>
 	</div>
-
-	<div class="promptLabel">
-		<input type="checkbox" id="tiltCheckbox" value="useTilt" onclick="setTilt()">
-		<label for="tiltCheckbox" style="font-size:20px">Draw with tilt?</label>
 	</div>
 
 	<div class="canvasDiv">
-		<canvas id="myCanvas" height="600"
+		<canvas id="myCanvas" height="680"
 				  style="border:1px solid #d3d3d3;">
 			Your browser does not support the canvas element.
 		</canvas>
 	</div>
 	<div>
-		<h1>Pointer data:</h1>
-		<button type="button" class="actionButton" onclick="clearReport()" style="font-size:20px">Clear</button>
-		<p id="showData" style="font-size:25px" onclick="toggleShowData()">Click to enable showing pointer data</p>
 	</div>
-	<div class="reportDiv">
-		<output id="reportElement" style="font-size:20px"></output>
 	</div>
 	<a id="link"></a>
-
+	<button id="finish" onclick="finishAndSave()">Finish and Save</button>
 	<script>
 		/////////////////////////////////////////////////////////////////////////
 		var txtFile = ["Pendown,X,Y,Pressure,TiltX,TiltY,Rotate,Buttons"];
@@ -136,14 +109,15 @@
 
 		var currentImageIndex = 0;
 		var imagePaths = ['NeuroTraceStart.png',
-		    'Test2.png',
-		    'Test3.png',
-		    'Test4.png',
-		    'Test8.png',
-		    'Test9.png',]
-
+			'Test2.png',
+			'Test3.png',
+			'Test4.png',
+			'Test5.png',
+			'Test8.png',
+			'Test9.png',
+			'NeuroTraceEnd.png']
+		var elem = document.documentElement;
 		var myCanvas = document.getElementById("myCanvas");
-		var reportElem = document.getElementById("reportElement");
 		var context = myCanvas.getContext("2d");
 		var supportsPointerEvents = window.PointerEvent;
 		var inStroke = false;
@@ -151,6 +125,7 @@
 		var isDrawing = false;
 		var reportData = false;
 		var useTilt = false;
+		var finish = document.getElementById("finish");
 
 		var primaryColorButton = document.getElementById("colorButton31");
 		var secondaryColorButton = document.getElementById("colorButton52");
@@ -176,10 +151,10 @@
 		function initPage() {
 			setCanvasProps();
 			var img = new Image();
-    img.onload = function () {
-        context.drawImage(img, 0, 0, myCanvas.width, myCanvas.height);
-    };
-    img.src = document.getElementById("backgroundImage").src;
+    		img.onload = function () {
+        	context.drawImage(img, 0, 0, myCanvas.width, myCanvas.height);
+    		};
+    		img.src = document.getElementById("backgroundImage").src;
 		}
 
 		/////////////////////////////////////////////////////////////////////////
@@ -192,27 +167,19 @@
 		// Canvas cleared to restore background color.
 		//
 		function setCanvasProps() {
+			console.log("cleared!");
 			if (myCanvas.width < window.innerWidth) {
 				myCanvas.width = window.innerWidth - 300;
 			}
+			console.log("scroll")
+			finish.scrollIntoView();
 			clearCanvas();	// ensures background saved with drawn image
 		}
 
 		/////////////////////////////////////////////////////////////////////////
 		// Enable/disable showing of device data
 		//
-		function toggleShowData() {
-			var label;
-			if (reportData) {
-				label = "Click to enable showing pointer data"
-			}
-			else {
-				label = "Click to disable showing pointer data"
-			}
-			reportData = !reportData;
-			document.getElementById("showData").innerHTML = label;
-		}
-
+		
 		/////////////////////////////////////////////////////////////////////////
 		// Sets a flag to enable/disable use of the pen tilt property.
 		//
@@ -248,7 +215,11 @@
 				link.click();
 			}
 		}
-
+		function scrollTo() {
+			console.log("scroll")
+			myCanvas.scrollIntoView();
+			
+		}
 		/////////////////////////////////////////////////////////////////////////
 		// Returns true if running on IE or Edge
 		//
@@ -259,9 +230,7 @@
 		/////////////////////////////////////////////////////////////////////////
 		// Clears the data report field.
 		//
-		function clearReport() {
-			reportElem.innerHTML = "";
-		}
+		
 
 		/////////////////////////////////////////////////////////////////////////
 		// Upon a window load event, registers all events.
@@ -641,7 +610,15 @@
     			newImage.src = imagePaths[currentImageIndex];
 	}
 
-		
+		function openFullscreen() {
+  			if (elem.requestFullscreen) {
+    				elem.requestFullscreen();
+  			} else if (elem.webkitRequestFullscreen) { /* Safari */
+    			elem.webkitRequestFullscreen();
+  			} else if (elem.msRequestFullscreen) { /* IE11 */
+    			elem.msRequestFullscreen();
+  			}
+	}
 		function downloadtxtFile() {
    			var imageName = imagePaths[currentImageIndex - 1].split('/').pop();
     			var csvFileName = imageName.replace(/\.[^/.]+$/, "") + ".csv";
@@ -663,11 +640,12 @@
 	function press1() {
 		nextPage();
 		initPage();
+		openFullscreen();
 		txtFile = ["Pendown,X,Y,Pressure,TiltX,TiltY,Rotate,Buttons"];
 	}
 		
 		console.log(txtFile);
 	</script>
-	<button onclick="finishAndSave()">Finish and Save</button>
+	
 </body>
 </html>
