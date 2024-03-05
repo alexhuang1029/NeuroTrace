@@ -4,5 +4,6 @@
 How to run NeuroTrace: 
 1. No installation needed. Download NeuroTraceV1.4.zip
 2. Extract NeuroTraceV1.4.zip to desired directory
-3. Run NeuroTraceV1.4.html in browser (Microsoft Edge preferred). Follow the directions
-4. Download and analyze csv kinematics data via Python (In development)
+3. Run NeuroTraceV1.4.html in browser (Microsoft Edge preferred).
+4. Using a supported WACOM Tablet (WACOM Intuos), follow the directions
+5. Download and analyze csv kinematics data via Python (In development)
