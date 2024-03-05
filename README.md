@@ -1,7 +1,11 @@
 ## NeuroTrace: A Machine-Powered Approach to Detect the Presence of Neurodegenerative Diseases through Vocational/Education History and Handwriting Kinematics Data
-## Version 1.4 03042024
+## Version 1.4 build 03042024
+Built with heavy inspiration from WACOM's device web development kit:
 
-How to run NeuroTrace: 
+https://github.com/Wacom-Developer/wacom-device-kit-web/tree/master 
+
+
+## How to run NeuroTrace: 
 1. No installation needed. Download NeuroTraceV1.4.zip
 2. Extract NeuroTraceV1.4.zip to desired directory
 3. Run NeuroTraceV1.4.html in browser (Microsoft Edge preferred).
