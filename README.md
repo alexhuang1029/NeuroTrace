@@ -1,5 +1,5 @@
 ## NeuroTrace: A Machine-Powered Approach to Detect the Presence of Neurodegenerative Diseases through Vocational/Education History and Handwriting Kinematics Data
-## Version 1.4 build 03042024
+## Version 1.4.1  build 03082024
 Built with heavy inspiration from WACOM's device web development kit:
 
 https://github.com/Wacom-Developer/wacom-device-kit-web/tree/master 
