@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=0.6">
-	<title>NeuroTrace v1.4</title>
+	<title>NeuroTrace v1.4.2</title>
 	<style>
 		h1, h2 {margin-bottom: 0px, margin-top: 0px}, 
 		h3 {margin-top: 0px, margin-bottom: 0px}, p {
@@ -81,7 +81,7 @@
 <body onload="initPage()" oncontextmenu="return false;">
 	<img id="backgroundImage" src="NeuroTraceStart.png" style="display: none;">
 	<div class='parent'>
-		<h2 id="scribblePrompt">NeuroTrace build 1.4: Active</h2>
+		<h2 id="scribblePrompt">NeuroTrace build 1.4.2: Active</h2>
 		<div class="actionButtonGroup">
 			<button type="button" class="actionButton" onclick="clearCanvas()" style="font-size:20px">Clear</button>
 			<button type="button" class="actionButton" onclick="saveCanvas()" style="font-size:20px">Save</button>
@@ -260,11 +260,12 @@
 		/////////////////////////////////////////////////////////////////////////
 		// Clears the data report field.
 		//
-		
+
 
 		/////////////////////////////////////////////////////////////////////////
 		// Upon a window load event, registers all events.
 		//
+        document.addEventListener('contextmenu', event => event.preventDefault());
 		document.addEventListener('keydown', function(event) {
     		// Check if the pressed key is 's' (case-sensitive)
    			if (event.key === 's') {
@@ -279,7 +280,7 @@
         			press1();
     							}
 		});
-
+        
 		window.addEventListener('load', function () {
 			// These events are handled for browsers that do not
 			// handle PointerEvent.
@@ -513,16 +514,28 @@
 
 					switch (evt.type) {
 						case "pointerdown":
+                            console.log("pointerdown")
 							isDrawing = true;
 							posLast = pos;
 							break;
 
 						case "pointerup":
+                            console.log("pointerup")
 							isDrawing = false;
+							posLast = pos;
 							break;
 
 						case "pointermove":
 							if (!isDrawing) {
+								posLast = pos;
+                                outStr += "3, " + 
+                                    parseFloat(screenPos.x).toFixed(3) + ", " +
+                                    parseFloat(screenPos.y).toFixed(3) + ", " +
+                                    parseFloat(pressure).toFixed(3) + ", " +
+                                    parseFloat(tilt.x).toFixed(3) + ", " +
+                                    parseFloat(tilt.y).toFixed(3) + ", " +
+                                    parseFloat(rotate).toFixed(3)
+                                txtFile.push(outStr);
 								return;
 							}
 
@@ -533,7 +546,11 @@
 								context.fillRect(pos.x, pos.y, eraserSize, eraserSize);
 								context.fill
 							}
-
+							if (pressure == 0) {
+								
+                                context.moveTo(posLast.x, posLast.y);
+                                
+							}
 							// To maintain pressure setting per data point, need to turn
 							// each data point into a stroke.
 							// TODO - this code "works" but draws flat lines if stroke is very fast.
@@ -577,14 +594,21 @@
 					// Reporting data will cause drawing lag, resulting in flat lines.
 					// IE11 barfs on Number.parseFloat(xxxx).toFixed(3)
 					if (outStr.includes("WARNING: unhandled event: ")) {
-						switch(true||false) {
+						switch (true || false) {
 							case outStr.includes("gotpointercapture"):
-								outStr = "1, ";
+								outStr = "2, ";
+								console.log("gotpointercapture");
 								break;
-							default: 
+							case outStr.includes("lostpointercapture"):
+								outStr = "1, ";
+								console.log("lostpointercapture");
+								break;
+							default:
 								outStr = "0, ";
 						}
-					} else {
+					}
+
+					else {
 						outStr = "0, ";
 					}
 
