@@ -2,7 +2,7 @@
 
 <img src="https://github.com/2iqsupernoob/NeuroTrace/assets/103464616/89fe36a4-5a92-4b7f-865f-2806de057947" width="400" >
 
-## Version 1.4.2  build 03092024
+## Version 1.4.2
 Built with inspiration from WACOM's device web development kit:
 
 https://github.com/Wacom-Developer/wacom-device-kit-web/tree/master 
